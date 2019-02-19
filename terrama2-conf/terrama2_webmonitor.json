@@ -1,0 +1,12 @@
+{
+  "webmonitor": {
+    "basePath": "/terrama2q/monitor/",
+    "port": 36001
+  },
+  "webadmin": {
+    "protocol": "http://",
+    "host": "canada.dgi.inpe.br",
+    "port": 80,
+    "basePath": "/terrama2q/admin/"
+  }
+}
