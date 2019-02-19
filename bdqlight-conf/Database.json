@@ -1,0 +1,9 @@
+{
+  "Port": 5432,
+  "Host": "terrama2_pg",
+  "Database": "terrama2",
+  "User": "postgres",
+  "Password": "mysecretpassword",
+  "MaxNumberOfClientsInThePool": 30,
+  "IdleTimeoutMillis": 30000
+}
