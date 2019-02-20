@@ -35,6 +35,7 @@ echo "Using docker-compose from ${DOCKER_COMPOSE}"
 TERRAMA2_REPO_URL="https://github.com/terrama2/docker.git"
 BDQLIGHT_REPO_URL="https://github.com/jonatasleon/bdqueimadas-light.git"
 TERRAMA2_DOCKER_DIR="terrama2-docker"
+TERRAMA2_DOCKER_CONF="terrama2-conf"
 BDQLIGHT_DOCKER_DIR="bdqlight"
 NGINX_DOCKER_DIR="nginx-conf"
 
@@ -61,6 +62,7 @@ POSTGRES_PASSWORD=mysecretpassword
 if [ ! -d ${TERRAMA2_DOCKER_DIR} ]; then
   git clone ${TERRAMA2_REPO_URL} ${TERRAMA2_DOCKER_DIR}
 fi
+cp -R ${TERRAMA2_DOCKER_CONF}/* ${TERRAMA2_DOCKER_DIR}/conf/
 
 if [ ! -d ${BDQLIGHT_DOCKER_DIR} ]; then
   git clone ${BDQLIGHT_REPO_URL} ${BDQLIGHT_DOCKER_DIR}
