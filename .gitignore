@@ -1,4 +1,5 @@
 bdqlight
 terrama2-docker
 *.swp
-env
+.env
+*.base
