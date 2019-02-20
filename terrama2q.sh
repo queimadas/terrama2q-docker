@@ -17,6 +17,15 @@ function run_into() {
   (cd $dir; eval ${command})
 }
 
+function parse() {
+  echo 'eval $(egrep -v '^\#' .env | xargs)' >  /tmp/tmp.sh
+  echo 'cat <<END_OF_TEXT' >>  /tmp/tmp.sh
+  cat "$1"                 >> /tmp/tmp.sh
+  echo 'END_OF_TEXT'       >> /tmp/tmp.sh
+  bash /tmp/tmp.sh > "$1"
+  rm /tmp/tmp.sh
+}
+
 GIT_LINK="https://git-scm.com/book/en/v2/Getting-Started-Installing-Git"
 GIT=$(which git)
 is_valid $? "Git must be installed. ${GIT_LINK}"
@@ -64,11 +73,30 @@ POSTGRES_PASSWORD=mysecretpassword
 if [ ! -d ${TERRAMA2_DOCKER_DIR} ]; then
   git clone ${TERRAMA2_REPO_URL} ${TERRAMA2_DOCKER_DIR}
 fi
-cp -R ${TERRAMA2_CONF_DIR}/* ${TERRAMA2_DOCKER_DIR}/conf/
 
 if [ ! -d ${BDQLIGHT_DOCKER_DIR} ]; then
   git clone ${BDQLIGHT_REPO_URL} ${BDQLIGHT_DOCKER_DIR}
 fi
+
+if [! -f '.env' ]; then
+    echo "Arquivo env não existe. Configure-o para prosseguir."
+    exit 1
+fi
+eval $(egrep -v '^#' .env | xargs)
+
+for image in ${TERRAMA2_CONF_DIR}/terrama2_webapp.json.in \
+             ${TERRAMA2_CONF_DIR}/terrama2_webmonitor.json; do
+  sed -e 's!{{\s\?\([_A-Z]\+\)\s\?}}!$\1!g' \
+      "${image}" > "${image}.base"
+  parse ${image}.base
+done
+
+cp ${TERRAMA2_CONF_DIR}/terrama2_webapp.json.in.base \
+   ${TERRAMA2_DOCKER_DIR}/conf/terrama2_webapp.json.in
+cp ${TERRAMA2_CONF_DIR}/terrama2_webmonitor.json.base \
+   ${TERRAMA2_DOCKER_DIR}/conf/terrama2_webmonitor.json
+
+exit 0
 
 cp -r ${TERRAMA2_DOCKER_DIR}/bdqueimadas-light/* ${BDQLIGHT_DOCKER_DIR}/
 run_into ${BDQLIGHT_DOCKER_DIR} "docker build --tag ${BDQLIGHT_IMAGE} . --rm"

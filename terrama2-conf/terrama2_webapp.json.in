@@ -1,5 +1,5 @@
 {
-  "basePath": "/terrama2q/admin/",
+  "basePath": "{{ PUBLIC_PATH }}/admin/",
   "port": 36000,
   "defaultFilePathList": [
     "/data",
