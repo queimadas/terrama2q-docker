@@ -78,7 +78,7 @@ if [ ! -d ${BDQLIGHT_DOCKER_DIR} ]; then
   git clone ${BDQLIGHT_REPO_URL} ${BDQLIGHT_DOCKER_DIR}
 fi
 
-if [! -f '.env' ]; then
+if [ ! -f '.env' ]; then
     echo "Arquivo env não existe. Configure-o para prosseguir."
     exit 1
 fi
