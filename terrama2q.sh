@@ -96,8 +96,6 @@ cp ${TERRAMA2_CONF_DIR}/terrama2_webapp.json.in.base \
 cp ${TERRAMA2_CONF_DIR}/terrama2_webmonitor.json.base \
    ${TERRAMA2_DOCKER_DIR}/conf/terrama2_webmonitor.json
 
-exit 0
-
 cp -r ${TERRAMA2_DOCKER_DIR}/bdqueimadas-light/* ${BDQLIGHT_DOCKER_DIR}/
 run_into ${BDQLIGHT_DOCKER_DIR} "docker build --tag ${BDQLIGHT_IMAGE} . --rm"
 
