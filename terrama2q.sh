@@ -35,9 +35,11 @@ echo "Using docker-compose from ${DOCKER_COMPOSE}"
 TERRAMA2_REPO_URL="https://github.com/terrama2/docker.git"
 BDQLIGHT_REPO_URL="https://github.com/jonatasleon/bdqueimadas-light.git"
 TERRAMA2_DOCKER_DIR="terrama2-docker"
-TERRAMA2_DOCKER_CONF="terrama2-conf"
 BDQLIGHT_DOCKER_DIR="bdqlight"
-NGINX_DOCKER_DIR="nginx-conf"
+
+BDQLIGHT_CONF_DIR="bdqlight-conf"
+NGINX_CONF_DIR="nginx-conf"
+TERRAMA2_CONF_DIR="terrama2-conf"
 
 SHARED_VOLUME="terrama2_shared_vol"
 TERRAMA2_VOLUME="terrama2_data_vol"
@@ -62,7 +64,7 @@ POSTGRES_PASSWORD=mysecretpassword
 if [ ! -d ${TERRAMA2_DOCKER_DIR} ]; then
   git clone ${TERRAMA2_REPO_URL} ${TERRAMA2_DOCKER_DIR}
 fi
-cp -R ${TERRAMA2_DOCKER_CONF}/* ${TERRAMA2_DOCKER_DIR}/conf/
+cp -R ${TERRAMA2_CONF_DIR}/* ${TERRAMA2_DOCKER_DIR}/conf/
 
 if [ ! -d ${BDQLIGHT_DOCKER_DIR} ]; then
   git clone ${BDQLIGHT_REPO_URL} ${BDQLIGHT_DOCKER_DIR}
@@ -106,7 +108,7 @@ docker run -d \
            --restart unless-stopped \
            --network ${TERRAMA2_NETWORK} \
            -p 127.0.0.1:39000:39000 \
-           -v ${PWD}/bdqlight-conf/:/opt/bdqueimadas-light/configurations/ \
+           -v ${PWD}/${BDQLIGHT_CONF_DIR}/:/opt/bdqueimadas-light/configurations/ \
            -v ${PWD}/${TERRAMA2_DOCKER_DIR}/conf/bdqueimadas-light/.pgpass:/root/.pgpass \
            -v ${BDQLIGHT_VOLUME}:/opt/bdqueimadas-light/tmp \
            ${BDQLIGHT_IMAGE}
@@ -116,10 +118,10 @@ docker run -d \
            --restart unless-stopped \
            --network ${TERRAMA2_NETWORK} \
            -p 0.0.0.0:80:80 \
-           -v ${PWD}/${NGINX_DOCKER_DIR}/nginx.conf:/etc/nginx/nginx.conf:ro \
-           -v ${PWD}/${NGINX_DOCKER_DIR}/proxy_params:/etc/nginx/proxy_params:ro \
-           -v ${PWD}/${NGINX_DOCKER_DIR}/wssocket_params:/etc/nginx/wssocket_params:ro \
-           -v ${PWD}/${NGINX_DOCKER_DIR}/conf.d:/etc/nginx/conf.d:ro \
+           -v ${PWD}/${NGINX_CONF_DIR}/nginx.conf:/etc/nginx/nginx.conf:ro \
+           -v ${PWD}/${NGINX_CONF_DIR}/proxy_params:/etc/nginx/proxy_params:ro \
+           -v ${PWD}/${NGINX_CONF_DIR}/wssocket_params:/etc/nginx/wssocket_params:ro \
+           -v ${PWD}/${NGINX_CONF_DIR}/conf.d:/etc/nginx/conf.d:ro \
            ${NGINX_IMAGE}
 
 run_into ${TERRAMA2_DOCKER_DIR} "./configure-version.sh"
