@@ -14,7 +14,7 @@ server {
     location {{ PUBLIC_PATH }}/admin/socket.io {
         proxy_pass http://terrama2_webapp_1:36000;
         include proxy_params;
-        rewrite ^{{ PUBLIC_PATH }}/admin/socket.io/?(.*) /socket.io/$1 break;
+        rewrite ^{{ PUBLIC_PATH }}/admin/socket.io/?(.*) /socket.io/\$1 break;
         include wssocket_params;
     }
 
@@ -22,7 +22,7 @@ server {
     location {{ PUBLIC_PATH }}/admin/i18n {
         proxy_pass http://terrama2_webapp_1:36000;
         include proxy_params;
-        rewrite ^{{ PUBLIC_PATH }}/admin/i18n/?(.*) /i18n/$1 break;
+        rewrite ^{{ PUBLIC_PATH }}/admin/i18n/?(.*) /i18n/\$1 break;
     }
 
     # TerraMA2Q Monitor (Main app)
@@ -35,7 +35,7 @@ server {
     location {{ PUBLIC_PATH }}/monitor/socket.io {
         proxy_pass http://terrama2_webmonitor_1:36001;
         include proxy_params;
-        rewrite ^{{ PUBLIC_PATH }}/monitor/socket.io/?(.*) /socket.io/$1 break;
+        rewrite ^{{ PUBLIC_PATH }}/monitor/socket.io/?(.*) /socket.io/\$1 break;
         include wssocket_params;
     }
 
@@ -43,7 +43,7 @@ server {
     location {{ PUBLIC_PATH }}/monitor/i18n {
         proxy_pass http://terrama2_webmonitor_1:36001;
         include proxy_params;
-        rewrite ^{{ PUBLIC_PATH }}/monitor/i18n/?(.*) /i18n/$1 break;
+        rewrite ^{{ PUBLIC_PATH }}/monitor/i18n/?(.*) /i18n/\$1 break;
     }
 
     # BDQueimadas Light (aplicação principal)
@@ -56,7 +56,7 @@ server {
     location {{ PUBLIC_PATH }}/bdq/socket.io {
         proxy_pass http://terrama2_bdq:39000;
         include proxy_params;
-        rewrite ^{{ PUBLIC_PATH }}/bdq/socket.io/?(.*) /socket.io/$1 break;
+        rewrite ^{{ PUBLIC_PATH }}/bdq/socket.io/?(.*) /socket.io/\$1 break;
         include wssocket_params;
     }
 
