@@ -5,63 +5,63 @@ server {
     server_name localhost;
 
     # TerraMA2Q Admin (aplicação principal)
-    location /terrama2q/admin {
+    location {{ PUBLIC_PATH }}/admin {
         proxy_pass http://terrama2_webapp_1:36000;
         include proxy_params;
     }
 
     # TerraMA2Q Admin (Socket.IO)
-    location /terrama2q/admin/socket.io {
+    location {{ PUBLIC_PATH }}/admin/socket.io {
         proxy_pass http://terrama2_webapp_1:36000;
         include proxy_params;
-        rewrite ^/terrama2q/admin/socket.io/?(.*) /socket.io/$1 break;
+        rewrite ^{{ PUBLIC_PATH }}/admin/socket.io/?(.*) /socket.io/$1 break;
         include wssocket_params;
     }
 
     # TerraMA2Q Admin (i18n)
-    location /terrama2q/admin/i18n {
+    location {{ PUBLIC_PATH }}/admin/i18n {
         proxy_pass http://terrama2_webapp_1:36000;
         include proxy_params;
-        rewrite ^/terrama2q/admin/i18n/?(.*) /i18n/$1 break;
+        rewrite ^{{ PUBLIC_PATH }}/admin/i18n/?(.*) /i18n/$1 break;
     }
 
     # TerraMA2Q Monitor (Main app)
-    location /terrama2q/monitor {
+    location {{ PUBLIC_PATH }}/monitor {
         proxy_pass http://terrama2_webmonitor_1:36001;
         include proxy_params;
     }
 
     # TerraMA2Q Monitor (Socket.IO)
-    location /terrama2q/monitor/socket.io {
+    location {{ PUBLIC_PATH }}/monitor/socket.io {
         proxy_pass http://terrama2_webmonitor_1:36001;
         include proxy_params;
-        rewrite ^/terrama2q/monitor/socket.io/?(.*) /socket.io/$1 break;
+        rewrite ^{{ PUBLIC_PATH }}/monitor/socket.io/?(.*) /socket.io/$1 break;
         include wssocket_params;
     }
 
     # TerraMA2Q Monitor (i18n)
-    location /terrama2q/monitor/i18n {
+    location {{ PUBLIC_PATH }}/monitor/i18n {
         proxy_pass http://terrama2_webmonitor_1:36001;
         include proxy_params;
-        rewrite ^/terrama2q/monitor/i18n/?(.*) /i18n/$1 break;
+        rewrite ^{{ PUBLIC_PATH }}/monitor/i18n/?(.*) /i18n/$1 break;
     }
 
     # BDQueimadas Light (aplicação principal)
-    location /terrama2q/bdq/ {
+    location {{ PUBLIC_PATH }}/bdq/ {
         proxy_pass http://terrama2_bdq:39000;
         include proxy_params;
     }
 
     # BDQueimadas Light (Socket.IO)
-    location /terrama2q/bdq/socket.io {
+    location {{ PUBLIC_PATH }}/bdq/socket.io {
         proxy_pass http://terrama2_bdq:39000;
         include proxy_params;
-        rewrite ^/terrama2q/bdq/socket.io/?(.*) /socket.io/$1 break;
+        rewrite ^{{ PUBLIC_PATH }}/bdq/socket.io/?(.*) /socket.io/$1 break;
         include wssocket_params;
     }
 
     # GeoServer (servidor de mapas)
-    location /terrama2q/geoserver {
+    location {{ PUBLIC_PATH }}/geoserver {
         proxy_pass http://terrama2_geoserver:8080;
         include proxy_params;
         add_header Access-Control-Allow-Origin *;

@@ -58,7 +58,8 @@ if [ ! -d ${BDQLIGHT_DOCKER_DIR} ]; then
 fi
 
 for image in ${TERRAMA2_CONF_DIR}/terrama2_webapp.json.in \
-             ${TERRAMA2_CONF_DIR}/terrama2_webmonitor.json; do
+             ${TERRAMA2_CONF_DIR}/terrama2_webmonitor.json \
+             ${NGINX_CONF_DIR}/conf.d/terrama2q.conf.in; do
   sed -e 's!{{\s\?\([_A-Z]\+\)\s\?}}!$\1!g' \
       "${image}" > "${image}.base"
   parse ${image}.base
@@ -68,6 +69,8 @@ cp ${TERRAMA2_CONF_DIR}/terrama2_webapp.json.in.base \
    ${TERRAMA2_DOCKER_DIR}/conf/terrama2_webapp.json.in
 cp ${TERRAMA2_CONF_DIR}/terrama2_webmonitor.json.base \
    ${TERRAMA2_DOCKER_DIR}/conf/terrama2_webmonitor.json
+cp ${NGINX_CONF_DIR}/conf.d/terrama2q.conf.in.base \
+   ${NGINX_CONF_DIR}/conf.d/terrama2q.conf
 
 cp -r ${TERRAMA2_DOCKER_DIR}/bdqueimadas-light/* ${BDQLIGHT_DOCKER_DIR}/
 run_into ${BDQLIGHT_DOCKER_DIR} "docker build --tag ${BDQLIGHT_IMAGE} . --rm"
