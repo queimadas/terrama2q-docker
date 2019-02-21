@@ -3,3 +3,4 @@ terrama2-docker
 *.swp
 .env
 *.base
+terrama2q.conf
