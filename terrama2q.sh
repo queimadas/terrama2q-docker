@@ -39,12 +39,14 @@ if [ ! -f '.env' ]; then
 fi
 apply_context .env
 
-GIT=$(which git)
-DOCKER=$(which docker)
-DOCKER_COMPOSE=$(which docker-compose)
 
+GIT=$(which git)
 is_valid $? "Git must be installed. ${GIT_LINK}"
+
+DOCKER=$(which docker)
 is_valid $? "Docker must be installed. ${DOCKER_LINK}"
+
+DOCKER_COMPOSE=$(which docker-compose)
 is_valid $? "Docker-compose must be installed. ${DOCKER_COMPOSE_LINK}"
 
 if [ ! -d ${TERRAMA2_DOCKER_DIR} ]; then
