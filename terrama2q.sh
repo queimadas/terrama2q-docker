@@ -131,3 +131,8 @@ docker run -d \
 
 run_into ${TERRAMA2_DOCKER_DIR} "./configure-version.sh"
 run_into ${TERRAMA2_DOCKER_DIR} "docker-compose -p terrama2 up -d"
+
+if [ "${FORCE_LOCAL_SERVICE_CONFIG}" = true ]; then
+  QUERY="UPDATE terrama2.logs logs SET \\\"user\\\" = '${POSTGRES_USER}', \\\"password\\\" = '${POSTGRES_PASSWORD}', \\\"host\\\" = '${POSTGRES_HOST}', \\\"port\\\" = '${POSTGRES_PORT}', \\\"database\\\" = '${POSTGRES_DB}' FROM terrama2.service_instances si WHERE si.name like 'Local%' AND logs.service_instance_id = si.id;"
+  eval "docker exec -it terrama2_pg /usr/bin/psql -U ${POSTGRES_USER} -c \"${QUERY}\" ${POSTGRES_DB}"
+fi
