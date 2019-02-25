@@ -96,17 +96,19 @@ docker run -d \
            -v ${PWD}/${TERRAMA2_DOCKER_DIR}/conf/terrama2_geoserver_setenv.sh:/usr/local/tomcat/bin/setenv.sh \
            ${GEOSERVER_IMAGE}
 
-docker run -d \
-           --name ${POSTGRES_CONTAINER} \
-           --restart unless-stopped \
-           --network ${SHARED_NETWORK} \
-           -p 127.0.0.1:${POSTGRES_PORT}:5432 \
-           -v ${POSTGRES_VOLUME}:/var/lib/postgresql/data \
-           -e POSTGRES_USER=${POSTGRES_USER} \
-           -e POSTGRES_PASSWORD=${POSTGRES_PASSWORD} \
-           -e POSTGRES_USER=${POSTGRES_USER} \
-           -e POSTGRES_DB=${POSTGRES_DB} \
-           ${POSTGRES_IMAGE}
+if [ ${POSTGRES_HOST} = ${POSTGRES_CONTAINER} ]; then
+    docker run -d \
+               --name ${POSTGRES_CONTAINER} \
+               --restart unless-stopped \
+               --network ${SHARED_NETWORK} \
+               -p 127.0.0.1:${POSTGRES_PORT}:5432 \
+               -v ${POSTGRES_VOLUME}:/var/lib/postgresql/data \
+               -e POSTGRES_USER=${POSTGRES_USER} \
+               -e POSTGRES_PASSWORD=${POSTGRES_PASSWORD} \
+               -e POSTGRES_USER=${POSTGRES_USER} \
+               -e POSTGRES_DB=${POSTGRES_DB} \
+               ${POSTGRES_IMAGE}
+fi
 
 docker run -d \
            --name ${BDQLIGHT_CONTAINER} \
@@ -133,6 +135,10 @@ run_into ${TERRAMA2_DOCKER_DIR} "./configure-version.sh"
 run_into ${TERRAMA2_DOCKER_DIR} "docker-compose -p terrama2 up -d"
 
 if [ "${FORCE_LOCAL_SERVICE_CONFIG}" = true ]; then
-  QUERY="UPDATE terrama2.logs logs SET \\\"user\\\" = '${POSTGRES_USER}', \\\"password\\\" = '${POSTGRES_PASSWORD}', \\\"host\\\" = '${POSTGRES_HOST}', \\\"port\\\" = '${POSTGRES_PORT}', \\\"database\\\" = '${POSTGRES_DB}' FROM terrama2.service_instances si WHERE si.name like 'Local%' AND logs.service_instance_id = si.id;"
-  eval "docker exec -it terrama2_pg /usr/bin/psql -U ${POSTGRES_USER} -c \"${QUERY}\" ${POSTGRES_DB}"
+    QUERY="UPDATE terrama2.logs logs SET \\\"user\\\" = '${POSTGRES_USER}', \\\"password\\\" = '${POSTGRES_PASSWORD}', \\\"host\\\" = '${POSTGRES_HOST}', \\\"port\\\" = '${POSTGRES_PORT}', \\\"database\\\" = '${POSTGRES_DB}' FROM terrama2.service_instances si WHERE si.name like 'Local%' AND logs.service_instance_id = si.id;"
+    eval "docker exec -it terrama2_pg /usr/bin/psql -U ${POSTGRES_USER} -c \"${QUERY}\" ${POSTGRES_DB}"
+fi
+
+if [ "${FORCE_RESTART_AFTER_CONFIG}" = true]; then
+    docker restart $(docker ps -a | grep 'terrama2_.*' | awk '{ print $1}')
 fi
