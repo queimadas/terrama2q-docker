@@ -139,6 +139,6 @@ if [ "${FORCE_LOCAL_SERVICE_CONFIG}" = true ]; then
     eval "docker exec -it terrama2_pg /usr/bin/psql -U ${POSTGRES_USER} -c \"${QUERY}\" ${POSTGRES_DB}"
 fi
 
-if [ "${FORCE_RESTART_AFTER_CONFIG}" = true]; then
+if [ "${FORCE_RESTART_AFTER_CONFIG}" = true ]; then
     docker restart $(docker ps -a | grep 'terrama2_.*' | awk '{ print $1}')
 fi
