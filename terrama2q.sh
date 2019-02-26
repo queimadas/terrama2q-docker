@@ -83,7 +83,7 @@ docker volume create ${GEOSERVER_VOLUME}
 docker volume create ${POSTGRES_VOLUME}
 docker volume create ${BDQLIGHT_VOLUME}
 
-if [ ${GEOSERVER_HOST} ${GEOSERVER_CONTAINER} ]; then
+if [ ${GEOSERVER_HOST} = ${GEOSERVER_CONTAINER} ]; then
     docker run -d \
                --name ${GEOSERVER_CONTAINER} \
                --restart unless-stopped \
