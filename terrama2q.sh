@@ -83,18 +83,20 @@ docker volume create ${GEOSERVER_VOLUME}
 docker volume create ${POSTGRES_VOLUME}
 docker volume create ${BDQLIGHT_VOLUME}
 
-docker run -d \
-           --name ${GEOSERVER_CONTAINER} \
-           --restart unless-stopped \
-           --network ${SHARED_NETWORK} \
-           -p 127.0.0.1:8080:8080 \
-           -e GEOSERVER_URL=${GEOSERVER_URL} \
-           -e GEOSERVER_DATA_DIR=${GEOSERVER_DATA_DIR} \
-           -v ${TERRAMA2_VOLUME}:/data \
-           -v ${SHARED_VOLUME}:/shared-data \
-           -v ${GEOSERVER_VOLUME}:${GEOSERVER_DATA_DIR} \
-           -v ${PWD}/${TERRAMA2_DOCKER_DIR}/conf/terrama2_geoserver_setenv.sh:/usr/local/tomcat/bin/setenv.sh \
-           ${GEOSERVER_IMAGE}
+if [ ${GEOSERVER_HOST} ${GEOSERVER_CONTAINER} ]; then
+    docker run -d \
+               --name ${GEOSERVER_CONTAINER} \
+               --restart unless-stopped \
+               --network ${SHARED_NETWORK} \
+               -p 127.0.0.1:8080:8080 \
+               -e GEOSERVER_URL=${GEOSERVER_URL} \
+               -e GEOSERVER_DATA_DIR=${GEOSERVER_DATA_DIR} \
+               -v ${TERRAMA2_VOLUME}:/data \
+               -v ${SHARED_VOLUME}:/shared-data \
+               -v ${GEOSERVER_VOLUME}:${GEOSERVER_DATA_DIR} \
+               -v ${PWD}/${GEOSERVER_FILE_SETENV}:/usr/local/tomcat/bin/setenv.sh \
+               ${GEOSERVER_IMAGE}
+fi
 
 if [ ${POSTGRES_HOST} = ${POSTGRES_CONTAINER} ]; then
     docker run -d \
@@ -137,8 +139,17 @@ run_into ${TERRAMA2_DOCKER_DIR} "docker-compose -p terrama2 up -d"
 if [ "${FORCE_LOCAL_SERVICE_CONFIG}" = true ]; then
     QUERY="UPDATE terrama2.logs logs SET \\\"user\\\" = '${POSTGRES_USER}', \\\"password\\\" = '${POSTGRES_PASSWORD}', \\\"host\\\" = '${POSTGRES_HOST}', \\\"port\\\" = '${POSTGRES_PORT}', \\\"database\\\" = '${POSTGRES_DB}' FROM terrama2.service_instances si WHERE si.name like 'Local%' AND logs.service_instance_id = si.id;"
     eval "docker exec -it terrama2_pg /usr/bin/psql -U ${POSTGRES_USER} -c \"${QUERY}\" ${POSTGRES_DB}"
+
+    CONN_STR="${GEOSERVER_PROTOCOL}://${GEOSERVER_USER}:${GEOSERVER_PASSWORD}@${GEOSERVER_HOST}:${GEOSERVER_PORT}${GEOSERVER_URL}"
+    QUERY="UPDATE terrama2.service_metadata sm SET \\\"value\\\" = '${CONN_STR}' FROM terrama2.service_instances si, terrama2.service_types st WHERE st.name = 'VIEW' AND si.service_type_id = st.id AND si.name LIKE 'Local%' AND sm.service_instance_id = si.id;"
+    eval "docker exec -it terrama2_pg /usr/bin/psql -U ${POSTGRES_USER} -c \"${QUERY}\" ${POSTGRES_DB}"
+
+    QUERY="SELECT sm.* FROM terrama2.service_metadata sm, terrama2.service_instances si, terrama2.service_types st WHERE st.name = 'VIEW' AND si.service_type_id = st.id AND si.name LIKE 'Local%' AND sm.service_instance_id = si.id;"
+    eval "docker exec -it terrama2_pg /usr/bin/psql -U ${POSTGRES_USER} -c \"${QUERY}\" ${POSTGRES_DB}"
 fi
 
 if [ "${FORCE_RESTART_AFTER_CONFIG}" = true ]; then
-    docker restart $(docker ps -a | grep 'terrama2_.*' | awk '{ print $1}')
+    docker restart $(docker ps -a | grep 'terrama2_.*' | awk '{ print $1 }')
 fi
+
+docker ps -a | grep 'terrama2_.*'
