@@ -1,5 +1,5 @@
 {
-  "basePath": "{{ PUBLIC_PATH }}/admin/",
+  "basePath": "{{ PUBLIC_PATH }}{{ WEBAPP_PATH }}/",
   "port": 36000,
   "defaultFilePathList": [
     "/data",
@@ -11,18 +11,6 @@
   "debug": true,
   "OGR2OGR": "ogr2ogr",
   "SHP2PGSQL": "shp2pgsql",
-  "db": {
-    "username": "{{ POSTGRES_USER }}",
-    "password": "{{ POSTGRES_PASSWORD }}",
-    "database": "{{ POSTGRES_DB }}",
-    "host": "{{ POSTGRES_HOST }}",
-    "port": {{ POSTGRES_PORT }},
-    "dialect": "postgres",
-    "define": {
-      "schema": "terrama2"
-    },
-    "logging": false
-  },
   "toolsMenu": [
     {
       "textEn": "Example",

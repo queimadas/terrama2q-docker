@@ -1,4 +1,4 @@
-#!/bin/bash -x
+#!/bin/bash
 
 function is_valid() {
   local code=$1
@@ -28,17 +28,21 @@ function parse() {
   rm /tmp/tmp.sh
 }
 
-function apply_context() {
+function apply_env() {
   eval $(egrep -v '^#' $1 | xargs)
 }
 
-apply_context .env.default
+apply_env .env.default
 if [ ! -f '.env' ]; then
   echo "Arquivo env não existe. Configure-o para prosseguir."
+  echo
+  echo "Para configurações pré-definidas de acesso externo:"
+  echo "\tcp .env-external .env"
+  echo "Para configurações pré-definidas de acesso interno:"
+  echo "\tcp .env-internal .env"
   exit 1
 fi
-apply_context .env
-
+apply_env .env
 
 GIT=$(which git)
 is_valid $? "Git must be installed. ${GIT_LINK}"
@@ -57,20 +61,21 @@ if [ ! -d ${BDQLIGHT_DOCKER_DIR} ]; then
   git clone ${BDQLIGHT_REPO_URL} ${BDQLIGHT_DOCKER_DIR}
 fi
 
-for image in ${TERRAMA2_CONF_DIR}/terrama2_webapp.json.in \
+for image in ${TERRAMA2_CONF_DIR}/terrama2_webapp_db.json \
+             ${TERRAMA2_CONF_DIR}/terrama2_webapp_settings.json \
              ${TERRAMA2_CONF_DIR}/terrama2_webmonitor.json \
-             ${NGINX_CONF_DIR}/conf.d/terrama2q.conf.in; do
+             ${NGINX_CONF_DIR}/conf.d/terrama2q.conf; do
   sed -e 's!{{\s\?\([_A-Z]\+\)\s\?}}!$\1!g' \
       "${image}" > "${image}.base"
   parse ${image}.base
 done
 
-cp ${TERRAMA2_CONF_DIR}/terrama2_webapp.json.in.base \
-   ${TERRAMA2_DOCKER_DIR}/conf/terrama2_webapp.json.in
 cp ${TERRAMA2_CONF_DIR}/terrama2_webmonitor.json.base \
    ${TERRAMA2_DOCKER_DIR}/conf/terrama2_webmonitor.json
-cp ${NGINX_CONF_DIR}/conf.d/terrama2q.conf.in.base \
-   ${NGINX_CONF_DIR}/conf.d/terrama2q.conf
+cp ${TERRAMA2_CONF_DIR}/terrama2_webapp_db.json.base \
+   ${TERRAMA2_DOCKER_DIR}/conf/terrama2_webapp_db.json
+cp ${TERRAMA2_CONF_DIR}/terrama2_webapp_settings.json.base \
+   ${TERRAMA2_DOCKER_DIR}/conf/terrama2_webapp_settings.json.in
 
 cp -r ${TERRAMA2_DOCKER_DIR}/bdqueimadas-light/* ${BDQLIGHT_DOCKER_DIR}/
 run_into ${BDQLIGHT_DOCKER_DIR} "docker build --tag ${BDQLIGHT_IMAGE} . --rm"
@@ -122,19 +127,32 @@ docker run -d \
            -v ${BDQLIGHT_VOLUME}:/opt/bdqueimadas-light/tmp \
            ${BDQLIGHT_IMAGE}
 
-docker run -d \
-           --name ${NGINX_CONTAINER} \
-           --restart unless-stopped \
-           --network ${SHARED_NETWORK} \
-           -p 0.0.0.0:${PUBLIC_PORT}:80 \
-           -v ${PWD}/${NGINX_CONF_DIR}/nginx.conf:/etc/nginx/nginx.conf:ro \
-           -v ${PWD}/${NGINX_CONF_DIR}/proxy_params:/etc/nginx/proxy_params:ro \
-           -v ${PWD}/${NGINX_CONF_DIR}/wssocket_params:/etc/nginx/wssocket_params:ro \
-           -v ${PWD}/${NGINX_CONF_DIR}/conf.d:/etc/nginx/conf.d:ro \
-           ${NGINX_IMAGE}
+if [ "${NGINX_UP}" = true ]; then
+  docker run -d \
+             --name ${NGINX_CONTAINER} \
+             --restart unless-stopped \
+             --network ${SHARED_NETWORK} \
+             -p 0.0.0.0:${PUBLIC_PORT}:80 \
+             -v ${PWD}/${NGINX_CONF_DIR}/nginx.conf:/etc/nginx/nginx.conf:ro \
+             -v ${PWD}/${NGINX_CONF_DIR}/proxy_params:/etc/nginx/proxy_params:ro \
+             -v ${PWD}/${NGINX_CONF_DIR}/wssocket_params:/etc/nginx/wssocket_params:ro \
+             -v ${PWD}/${NGINX_CONF_DIR}/conf.d/terrama2q.conf.base:/etc/nginx/conf.d/terrama2q.conf:ro \
+             ${NGINX_IMAGE}
+fi
 
 run_into ${TERRAMA2_DOCKER_DIR} "./configure-version.sh"
 run_into ${TERRAMA2_DOCKER_DIR} "docker-compose -p terrama2 up -d"
+
+if [ "${NGINX_UP}" = true ]; then
+  WEBAPP_PORT=${PUBLIC_PORT}
+  WEBMONITOR_PORT=${PUBLIC_PORT}
+  GEOSERVER_PORT=${GEOSERVER_PORT}
+  GEOSERVER_HOST=${PUBLIC_HOSTNAME}
+else
+  WEBAPP_PORT=36000
+  WEBMONITOR_PORT=36001
+  GEOSERVER_PORT=8080
+fi
 
 if [ "${FORCE_LOCAL_SERVICE_CONFIG}" = true ]; then
     QUERY="UPDATE terrama2.logs logs SET \\\"user\\\" = '${POSTGRES_USER}', \\\"password\\\" = '${POSTGRES_PASSWORD}', \\\"host\\\" = '${POSTGRES_HOST}', \\\"port\\\" = '${POSTGRES_PORT}', \\\"database\\\" = '${POSTGRES_DB}' FROM terrama2.service_instances si WHERE si.name like 'Local%' AND logs.service_instance_id = si.id;"
@@ -152,4 +170,14 @@ if [ "${FORCE_RESTART_AFTER_CONFIG}" = true ]; then
     docker restart $(docker ps -a | grep 'terrama2_.*' | awk '{ print $1 }')
 fi
 
+echo 'Instâcias TerraMA2'
 docker ps -a | grep 'terrama2_.*'
+
+cat << EOF
+
+Endereços das aplicações
+
+TerraMA2 Monitor: ${PUBLIC_PROTOCOL}${PUBLIC_HOSTNAME}:${WEBMONITOR_PORT}${PUBLIC_PATH}${WEBMONITOR_PATH}/
+TerraMA2 Admin:   ${PUBLIC_PROTOCOL}${PUBLIC_HOSTNAME}:${WEBAPP_PORT}${PUBLIC_PATH}${WEBAPP_PATH}/
+Geoserver:        ${GEOSERVER_PROTOCOL}://${GEOSERVER_HOST}:${GEOSERVER_PORT}${GEOSERVER_URL}
+EOF

@@ -1,12 +1,12 @@
 {
   "webmonitor": {
-    "basePath": "{{ PUBLIC_PATH }}/monitor/",
+    "basePath": "{{ PUBLIC_PATH }}{{ WEBMONITOR_PATH }}/",
     "port": 36001
   },
   "webadmin": {
     "protocol": "{{ PUBLIC_PROTOCOL }}",
     "host": "{{ PUBLIC_HOSTNAME }}",
     "port": {{ PUBLIC_PORT }},
-    "basePath": "{{ PUBLIC_PATH }}/admin/"
+    "basePath": "{{ PUBLIC_PATH }}{{ WEBAPP_PATH }}/"
   }
 }
