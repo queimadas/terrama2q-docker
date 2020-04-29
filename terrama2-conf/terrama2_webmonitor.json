@@ -6,7 +6,7 @@
   "webadmin": {
     "protocol": "{{ PUBLIC_PROTOCOL }}",
     "host": "{{ PUBLIC_HOSTNAME }}",
-    "port": {{ PUBLIC_PORT }},
+    "port": {{ WEBAPP_PORT_EXTERNAL }},
     "basePath": "{{ PUBLIC_PATH }}{{ WEBAPP_PATH }}/"
   }
 }
