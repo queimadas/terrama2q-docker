@@ -132,7 +132,7 @@ if [ "${NGINX_UP}" = true ]; then
              --name ${NGINX_CONTAINER} \
              --restart unless-stopped \
              --network ${SHARED_NETWORK} \
-             -p 0.0.0.0:${PUBLIC_PORT}:80 \
+             -p 0.0.0.0:${NGINX_PORT}:80 \
              -v ${PWD}/${NGINX_CONF_DIR}/nginx.conf:/etc/nginx/nginx.conf:ro \
              -v ${PWD}/${NGINX_CONF_DIR}/proxy_params:/etc/nginx/proxy_params:ro \
              -v ${PWD}/${NGINX_CONF_DIR}/wssocket_params:/etc/nginx/wssocket_params:ro \
