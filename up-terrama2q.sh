@@ -96,6 +96,7 @@ if [ ${GEOSERVER_LOCAL} = true ]; then
                -p 127.0.0.1:8080:8080 \
                -e GEOSERVER_URL=${GEOSERVER_URL} \
                -e GEOSERVER_DATA_DIR=${GEOSERVER_DATA_DIR} \
+               -e GEOSERVER_CSRF_DISABLED=${GEOSERVER_CSRF_DISABLED} \
                -v ${TERRAMA2_VOLUME}:/data \
                -v ${SHARED_VOLUME}:/shared-data \
                -v ${GEOSERVER_VOLUME}:${GEOSERVER_DATA_DIR} \
