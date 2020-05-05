@@ -115,6 +115,8 @@ if [ ${POSTGRES_HOST} = ${POSTGRES_CONTAINER} ]; then
                -e POSTGRES_USER=${POSTGRES_USER} \
                -e POSTGRES_DB=${POSTGRES_DB} \
                ${POSTGRES_IMAGE}
+    QUERY="CREATE EXTENSION postgis; CREATE EXTENSION unaccent;"
+    eval "docker exec -it ${POSTGRES_CONTAINER} /usr/bin/psql -U ${POSTGRES_USER} -c \"${QUERY}\" ${POSTGRES_DB}"
 fi
 
 docker run -d \
@@ -156,14 +158,14 @@ fi
 
 if [ "${FORCE_LOCAL_SERVICE_CONFIG}" = true ]; then
     QUERY="UPDATE terrama2.logs logs SET \\\"user\\\" = '${POSTGRES_USER}', \\\"password\\\" = '${POSTGRES_PASSWORD}', \\\"host\\\" = '${POSTGRES_HOST}', \\\"port\\\" = '${POSTGRES_PORT}', \\\"database\\\" = '${POSTGRES_DB}' FROM terrama2.service_instances si WHERE si.name like 'Local%' AND logs.service_instance_id = si.id;"
-    eval "docker exec -it terrama2_pg /usr/bin/psql -U ${POSTGRES_USER} -c \"${QUERY}\" ${POSTGRES_DB}"
+    eval "docker exec -it ${POSTGRES_CONTAINER} /usr/bin/psql -U ${POSTGRES_USER} -c \"${QUERY}\" ${POSTGRES_DB}"
 
     CONN_STR="${GEOSERVER_PROTOCOL}://${GEOSERVER_USER}:${GEOSERVER_PASSWORD}@${GEOSERVER_HOST}:${GEOSERVER_PORT}${GEOSERVER_URL}"
     QUERY="UPDATE terrama2.service_metadata sm SET \\\"value\\\" = '${CONN_STR}' FROM terrama2.service_instances si, terrama2.service_types st WHERE st.name = 'VIEW' AND si.service_type_id = st.id AND si.name LIKE 'Local%' AND sm.service_instance_id = si.id;"
-    eval "docker exec -it terrama2_pg /usr/bin/psql -U ${POSTGRES_USER} -c \"${QUERY}\" ${POSTGRES_DB}"
+    eval "docker exec -it ${POSTGRES_CONTAINER} /usr/bin/psql -U ${POSTGRES_USER} -c \"${QUERY}\" ${POSTGRES_DB}"
 
     QUERY="SELECT sm.* FROM terrama2.service_metadata sm, terrama2.service_instances si, terrama2.service_types st WHERE st.name = 'VIEW' AND si.service_type_id = st.id AND si.name LIKE 'Local%' AND sm.service_instance_id = si.id;"
-    eval "docker exec -it terrama2_pg /usr/bin/psql -U ${POSTGRES_USER} -c \"${QUERY}\" ${POSTGRES_DB}"
+    eval "docker exec -it ${POSTGRES_CONTAINER} /usr/bin/psql -U ${POSTGRES_USER} -c \"${QUERY}\" ${POSTGRES_DB}"
 fi
 
 if [ "${FORCE_RESTART_AFTER_CONFIG}" = true ]; then
