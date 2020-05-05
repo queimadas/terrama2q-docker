@@ -88,7 +88,7 @@ docker volume create ${GEOSERVER_VOLUME}
 docker volume create ${POSTGRES_VOLUME}
 docker volume create ${BDQLIGHT_VOLUME}
 
-if [ ${GEOSERVER_LOCAL} = true ]; then
+if [ ${GEOSERVER_BY_DOCKER} = true ]; then
     docker run -d \
                --name ${GEOSERVER_CONTAINER} \
                --restart unless-stopped \
