@@ -59,6 +59,8 @@ fi
 
 if [ ! -d ${BDQLIGHT_DOCKER_DIR} ]; then
   git clone ${BDQLIGHT_REPO_URL} ${BDQLIGHT_DOCKER_DIR}
+  cp -r ${TERRAMA2_DOCKER_DIR}/bdqueimadas-light/* ${BDQLIGHT_DOCKER_DIR}/
+  run_into ${BDQLIGHT_DOCKER_DIR} "docker build --tag ${BDQLIGHT_IMAGE} . --rm"
 fi
 
 for image in ${TERRAMA2_CONF_DIR}/terrama2_webapp_db.json \
@@ -76,9 +78,6 @@ cp ${TERRAMA2_CONF_DIR}/terrama2_webapp_db.json.base \
    ${TERRAMA2_DOCKER_DIR}/conf/terrama2_webapp_db.json
 cp ${TERRAMA2_CONF_DIR}/terrama2_webapp_settings.json.base \
    ${TERRAMA2_DOCKER_DIR}/conf/terrama2_webapp_settings.json.in
-
-cp -r ${TERRAMA2_DOCKER_DIR}/bdqueimadas-light/* ${BDQLIGHT_DOCKER_DIR}/
-run_into ${BDQLIGHT_DOCKER_DIR} "docker build --tag ${BDQLIGHT_IMAGE} . --rm"
 
 docker network create ${SHARED_NETWORK}
 
