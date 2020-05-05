@@ -2,7 +2,7 @@
   "Subtitles": [
     {
       "Id": "fires-subtitles",
-      "LayerId": "bdqueimadas:focos_bdq_light",
+      "LayerId": "terrama2_6:view6",
       "LayerName": "Camada: Focos",
       "Subtitles": [
         {
@@ -132,6 +132,15 @@
           "MaxResolution": "Infinity"
         },
         {
+          "SubtitleId": "METOP-C",
+          "SubtitleText": "METOP-C",
+          "FillColor": null,
+          "BorderColor": null,
+          "Image": "images/satellitesIcons/metop-c.png",
+          "MinResolution": 0,
+          "MaxResolution": "Infinity"
+        },
+        {
           "SubtitleId": "NOAA-12",
           "SubtitleText": "NOAA-12",
           "FillColor": null,
@@ -240,6 +249,15 @@
           "MaxResolution": "Infinity"
         },
         {
+          "SubtitleId": "NOAA-20",
+          "SubtitleText": "NOAA-20",
+          "FillColor": null,
+          "BorderColor": null,
+          "Image": "../images/satellitesIcons/noaa-18.png",
+          "MinResolution": 0,
+          "MaxResolution": "Infinity"
+        },
+        {
           "SubtitleId": "NPP",
           "SubtitleText": "NPP",
           "FillColor": null,
@@ -249,8 +267,8 @@
           "MaxResolution": "Infinity"
         },
         {
-          "SubtitleId": "NPP_375",
-          "SubtitleText": "NPP_375",
+          "SubtitleId": "NPP-375",
+          "SubtitleText": "NPP-375",
           "FillColor": null,
           "BorderColor": null,
           "Image": "images/satellitesIcons/npp-375.png",
@@ -308,6 +326,103 @@
           "FillColor": null,
           "BorderColor": null,
           "Image": "images/satellitesIcons/trmm.png",
+          "MinResolution": 0,
+          "MaxResolution": "Infinity"
+        }
+      ]
+    },
+    {
+      "Id": "smoke-subtitles",
+      "LayerId": "view72",
+      "LayerName": "Camada: Fumaça na Coluna Atmosf. (AOD - 469nm)",
+      "Subtitles": [
+        {
+          "SubtitleId": null,
+          "SubtitleText": "0.0",
+          "FillColor": "rgb(245,245,245)",
+          "BorderColor": "rgb(245,245,245)",
+          "Image": null,
+          "MinResolution": 0,
+          "MaxResolution": "Infinity"
+        },
+        {
+          "SubtitleId": null,
+          "SubtitleText": "0.1",
+          "FillColor": "rgb(245,245,220)",
+          "BorderColor": "rgb(245,245,220)",
+          "Image": null,
+          "MinResolution": 0,
+          "MaxResolution": "Infinity"
+        },
+        {
+          "SubtitleId": null,
+          "SubtitleText": "0.2",
+          "FillColor": "rgb(255,224,181)",
+          "BorderColor": "rgb(255,224,181)",
+          "Image": null,
+          "MinResolution": 0,
+          "MaxResolution": "Infinity"
+        },
+        {
+          "SubtitleId": null,
+          "SubtitleText": "0.3",
+          "FillColor": "rgb(255,209,145)",
+          "BorderColor": "rgb(255,209,145)",
+          "Image": null,
+          "MinResolution": 0,
+          "MaxResolution": "Infinity"
+        },
+        {
+          "SubtitleId": null,
+          "SubtitleText": "0.4",
+          "FillColor": "rgb(255,165,0)",
+          "BorderColor": "rgb(255,165,0)",
+          "Image": null,
+          "MinResolution": 0,
+          "MaxResolution": "Infinity"
+        },
+        {
+          "SubtitleId": null,
+          "SubtitleText": "0.5",
+          "FillColor": "rgb(255,140,0)",
+          "BorderColor": "rgb(255,140,0)",
+          "Image": null,
+          "MinResolution": 0,
+          "MaxResolution": "Infinity"
+        },
+        {
+          "SubtitleId": null,
+          "SubtitleText": "0.6",
+          "FillColor": "rgb(255,127,80)",
+          "BorderColor": "rgb(255,127,80)",
+          "Image": null,
+          "MinResolution": 0,
+          "MaxResolution": "Infinity"
+        },
+        {
+          "SubtitleId": null,
+          "SubtitleText": "0.7",
+          "FillColor": "rgb(255,69,0)",
+          "BorderColor": "rgb(255,69,0)",
+          "Image": null,
+          "MinResolution": 0,
+          "MaxResolution": "Infinity"
+        },
+        {
+          "SubtitleId": null,
+          "SubtitleText": "0.8",
+          "FillColor": "rgb(239,6,6)",
+          "BorderColor": "rgb(239,6,6)",
+          "Image": null,
+          "MinResolution": 0,
+          "MaxResolution": "Infinity"
+        },
+        {
+          "SubtitleId": null,
+          "SubtitleText": "0.9",
+          "FillColor": "rgb(178,34,34)",
+          "BorderColor": "rgb(178,34,34)",
+          "Image": null,
           "MinResolution": 0,
           "MaxResolution": "Infinity"
         }
@@ -1062,7 +1177,7 @@
   "EnableAddAndRemoveLayers": false,
   "Layers": [
     {
-      "Id": "bdqueimadas:focos_bdq_light",
+      "Id": "terrama2_6:view6",
       "Name": "Focos",
       "Title": "Focos",
       "LayerGroup": false,
@@ -1073,14 +1188,14 @@
       "AddsInTheStart": true,
       "AppendAtTheEnd": false,
       "Params": {
-        "Url": "http://localhost:8080/geoserver/ows",
+        "Url": "http://localhost:8080/terrama2q/geoserver/ows",
         "ServerType": "geoserver",
         "MinResolution": 0,
         "MaxResolution": "Infinity"
       }
     },
     {
-      "Id": "bdqueimadas:paises_light",
+      "Id": "terrama2_1:view1",
       "Name": "Países",
       "Title": "Países",
       "LayerGroup": false,
@@ -1091,14 +1206,17 @@
       "AddsInTheStart": true,
       "AppendAtTheEnd": false,
       "Params": {
-        "Url": "http://localhost:8080/geoserver/ows",
+        "Url": "http://localhost:8080/terrama2q/geoserver/ows",
+        "Version": "1.1.0",
+        "HEIGHT": 256,
+        "WIDTH": 256,
         "ServerType": "geoserver",
         "MinResolution": 0,
         "MaxResolution": "Infinity"
       }
     },
     {
-      "Id": "bdqueimadas:estados_light",
+      "Id": "terrama2_2:view2",
       "Name": "Estados",
       "Title": "Estados",
       "LayerGroup": false,
@@ -1109,14 +1227,15 @@
       "AddsInTheStart": true,
       "AppendAtTheEnd": false,
       "Params": {
-        "Url": "http://localhost:8080/geoserver/ows",
+        "Url": "http://localhost:8080/terrama2q/geoserver/ows",
+        "Version": "1.1.0",
         "ServerType": "geoserver",
         "MinResolution": 0,
         "MaxResolution": "Infinity"
       }
     },
     {
-      "Id": "bdqueimadas:municipios_light",
+      "Id": "terrama2_3:view3",
       "Name": "Municípios",
       "Title": "Municípios",
       "LayerGroup": false,
@@ -1127,16 +1246,17 @@
       "AddsInTheStart": true,
       "AppendAtTheEnd": false,
       "Params": {
-        "Url": "http://localhost:8080/geoserver/ows",
+        "Url": "http://localhost:8080/terrama2q/geoserver/ows",
+        "Version": "1.1.0",
         "ServerType": "geoserver",
         "MinResolution": 0,
         "MaxResolution": "Infinity"
       }
     },
     {
-      "Id": "bdqueimadas:biomas",
+      "Id": "terrama2_4:view4",
       "Name": "Biomas Brasileiros",
-  	  "Title": "Biomas Brasileiros",
+      "Title": "Biomas Brasileiros",
       "LayerGroup": false,
       "Background": false,
       "Wmts": false,
@@ -1145,14 +1265,14 @@
       "AddsInTheStart": true,
       "AppendAtTheEnd": false,
       "Params": {
-        "Url": "http://localhost:8080/geoserver/ows",
+        "Url": "http://localhost:8080/terrama2q/geoserver/ows",
         "ServerType": "geoserver",
         "MinResolution": 0,
         "MaxResolution": "Infinity"
       }
     },
     {
-      "Id": "bdqueimadas:unidades_conservacao_federais",
+      "Id": "terrama2_5:view5",
       "Name": "Unidades de Conservação Federais",
       "Title": "Unidades de Conservação Federais",
       "LayerGroup": false,
@@ -1163,7 +1283,7 @@
       "AddsInTheStart": true,
       "AppendAtTheEnd": false,
       "Params": {
-        "Url": "http://localhost:8080/geoserver/ows",
+        "Url": "http://localhost:8080/terrama2q/geoserver/ows",
         "ServerType": "geoserver",
         "MinResolution": 0,
         "MaxResolution": "Infinity"
@@ -1175,7 +1295,7 @@
       "LayerGroup": true,
       "Layers": [
         {
-          "Id": "VIIRS_SNPP_CorrectedReflectance_TrueColor",
+          "Id": "VIIRS_SNPP_CorrectedReflectance_BandsM11-I2-I1",
           "Name": "NPP / VIIRRS {{FINAL_DATE=YYYY/MM/DD}}",
           "Title": "NPP / VIIRRS",
           "LayerGroup": false,
@@ -1313,91 +1433,6 @@
               "tileSize": 512
             }
           }
-        },
-        {
-          "Id": "noaa15_quicklook",
-          "Name": "NOAA-15 / AVHRR {{FINAL_DATE=YYYY/MM/DD}}",
-          "Title": "NOAA-15 / AVHRR",
-          "LayerGroup": false,
-          "Background": true,
-          "Wmts": false,
-          "Visible": false,
-          "Disabled": false,
-          "AddsInTheStart": true,
-          "AppendAtTheEnd": false,
-          "Params": {
-            "Url": "https://prodwww-queimadas.dgi.inpe.br/queimadas/mapserv?map=MAP_QUEIMADAS",
-            "ServerType": "mapserver",
-            "Time": "{{FINAL_DATE=YYYY-MM-DD}}"
-          }
-        },
-        {
-          "Id": "noaa18_quicklook",
-          "Name": "NOAA-18 / AVHRR {{FINAL_DATE=YYYY/MM/DD}}",
-          "Title": "NOAA-18 / AVHRR",
-          "LayerGroup": false,
-          "Background": true,
-          "Wmts": false,
-          "Visible": false,
-          "Disabled": false,
-          "AddsInTheStart": true,
-          "AppendAtTheEnd": false,
-          "Params": {
-            "Url": "https://prodwww-queimadas.dgi.inpe.br/queimadas/mapserv?map=MAP_QUEIMADAS",
-            "ServerType": "mapserver",
-            "Time": "{{FINAL_DATE=YYYY-MM-DD}}"
-          }
-        },
-        {
-          "Id": "noaa19_quicklook",
-          "Name": "NOAA-19 / AVHRR {{FINAL_DATE=YYYY/MM/DD}}",
-          "Title": "NOAA-19 / AVHRR",
-          "LayerGroup": false,
-          "Background": true,
-          "Wmts": false,
-          "Visible": false,
-          "Disabled": false,
-          "AddsInTheStart": true,
-          "AppendAtTheEnd": false,
-          "Params": {
-            "Url": "https://prodwww-queimadas.dgi.inpe.br/queimadas/mapserv?map=MAP_QUEIMADAS",
-            "ServerType": "mapserver",
-            "Time": "{{FINAL_DATE=YYYY-MM-DD}}"
-          }
-        },
-        {
-          "Id": "goes",
-          "Name": "GOES / Imager (No Futuro) {{FINAL_DATE=YYYY/MM/DD}}",
-          "Title": "GOES / Imager (No Futuro)",
-          "LayerGroup": false,
-          "Background": true,
-          "Wmts": false,
-          "Visible": false,
-          "Disabled": true,
-          "AddsInTheStart": true,
-          "AppendAtTheEnd": false,
-          "Params": {
-            "Url": "https://queimadas.dgi.inpe.br/wms/queimadas/",
-            "ServerType": "mapserver",
-            "Time": "{{FINAL_DATE=YYYY-MM-DD}}"
-          }
-        },
-        {
-          "Id": "msg",
-          "Name": "MSG / SEVIRI (No Futuro) {{FINAL_DATE=YYYY/MM/DD}}",
-          "Title": "MSG / SEVIRI (No Futuro)",
-          "LayerGroup": false,
-          "Background": true,
-          "Wmts": false,
-          "Visible": false,
-          "Disabled": true,
-          "AddsInTheStart": true,
-          "AppendAtTheEnd": false,
-          "Params": {
-            "Url": "https://queimadas.dgi.inpe.br/wms/queimadas/",
-            "ServerType": "mapserver",
-            "Time": "{{FINAL_DATE=YYYY-MM-DD}}"
-          }
         }
       ]
     },
@@ -1423,7 +1458,7 @@
               "AddsInTheStart": true,
               "AppendAtTheEnd": false,
               "Params": {
-                "Url": "http://sirc.dgi.inpe.br/cgi-bin/mapserv?map=/srv/queimadas/meteorologia/mapfiles/meteorologia.map",
+                "Url": "http://sirc.dgi.inpe.br/cgi-bin/mapserv?map=/dados/mapfiles/riscofogo.map",
                 "ServerType": "mapserver",
                 "MinResolution": 0,
                 "MaxResolution": "Infinity",
@@ -1445,7 +1480,7 @@
               "AddsInTheStart": true,
               "AppendAtTheEnd": false,
               "Params": {
-                "Url": "http://sirc.dgi.inpe.br/cgi-bin/mapserv?map=/srv/queimadas/meteorologia/mapfiles/meteorologia.map",
+                "Url": "http://sirc.dgi.inpe.br/cgi-bin/mapserv?map=/dados/mapfiles/riscofogo.map",
                 "ServerType": "mapserver",
                 "MinResolution": 0,
                 "MaxResolution": "Infinity"
@@ -1463,7 +1498,7 @@
               "AddsInTheStart": true,
               "AppendAtTheEnd": false,
               "Params": {
-                "Url": "http://sirc.dgi.inpe.br/cgi-bin/mapserv?map=/srv/queimadas/meteorologia/mapfiles/meteorologia.map",
+                "Url": "http://sirc.dgi.inpe.br/cgi-bin/mapserv?map=/dados/mapfiles/riscofogo.map",
                 "ServerType": "mapserver",
                 "MinResolution": 0,
                 "MaxResolution": "Infinity"
@@ -1481,7 +1516,7 @@
               "AddsInTheStart": true,
               "AppendAtTheEnd": false,
               "Params": {
-                "Url": "http://sirc.dgi.inpe.br/cgi-bin/mapserv?map=/srv/queimadas/meteorologia/mapfiles/meteorologia.map",
+                "Url": "http://sirc.dgi.inpe.br/cgi-bin/mapserv?map=/dados/mapfiles/riscofogo.map",
                 "ServerType": "mapserver",
                 "MinResolution": 0,
                 "MaxResolution": "Infinity"

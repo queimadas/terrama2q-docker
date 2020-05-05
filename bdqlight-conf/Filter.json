@@ -1,39 +1,41 @@
 {
   "LayerToFilter": {
-    "LayerId": "bdqueimadas:focos_bdq_light",
-    "IdFieldName": "pid",
-    "DateTimeFieldName": "data_pas",
+    "LayerId": "terrama2_6:view6",
+    "IdFieldName": "foco_id",
+    "LatitudeFieldName": "latitude",
+    "LongitudeFieldName": "longitude",
+    "DateTimeFieldName": "data_hora_gmt",
     "SatelliteFieldName": "satelite",
-    "CityFieldName": "municipio_id",
-    "CityNameFieldName": "municipio_nome",
-    "StateFieldName": "estado_id",
-    "StateNameFieldName": "estado_nome",
-    "CountryFieldName": "pais_id",
-    "CountryNameFieldName": "pais_nome",
+    "CityFieldName": "id_2",
+    "CityNameFieldName": "municipio",
+    "StateFieldName": "id_1",
+    "StateNameFieldName": "estado",
+    "CountryFieldName": "id_0",
+    "CountryNameFieldName": "pais",
     "BiomeIdFieldName": "bioma_id",
-    "BiomeFieldName": "bioma_nome",
+    "BiomeFieldName": "bioma",
     "DateFormat": "YYYY-MM-DD",
     "DateTimeFormat": "YYYY-MM-DD HH:II:SS",
     "InitialDate": "{{-|1|d=YYYY-MM-DD}}",
     "FinalDate": "{{0=YYYY-MM-DD}}"
   },
   "CountriesLayer": {
-    "Id": "bdqueimadas:paises_light"
+    "Id": "terrama2_1:view1"
   },
   "StatesLayer": {
-    "Id": "bdqueimadas:estados_light",
-    "CountryField": "pais_id"
+    "Id": "terrama2_2:view2",
+    "CountryField": "id_0"
   },
   "CitiesLayer": {
-    "Id": "bdqueimadas:municipios_light",
-    "CountryField": "pais_id",
-    "StateField": "complete_id_state",
-    "CityField": "complete_id"
+    "Id": "terrama2_3:view3",
+    "CountryField": "id_0",
+    "StateField": "id_1",
+    "CityField": "id_2"
   },
   "ProtectedAreas": {
     "UCF": {
-      "LayerName": "bdqueimadas:unidades_conservacao_federais",
-      "IdField": "gid"
+      "LayerName": "terrama2_5:view5",
+      "IdField": "id_ucf"
     }
   },
   "SpatialFilter": {
@@ -82,7 +84,7 @@
     },
     {
       "Id": "ATSR",
-      "Name": "ATSR ESA Noite",
+      "Name": "ATSR Noite",
       "Begin": "1998-06-01",
       "End": "2012-03-28",
       "Current": false,
@@ -93,7 +95,7 @@
     },
     {
       "Id": "TERRA_M-M",
-      "Name": "TERRA_M-M",
+      "Name": "Terra Manhã",
       "Begin": "2000-11-01",
       "End": "",
       "Current": true,
@@ -104,7 +106,7 @@
     },
     {
       "Id": "TERRA_M-T",
-      "Name": "TERRA_M-T",
+      "Name": "Terra Tarde",
       "Begin": "2000-11-01",
       "End": "",
       "Current": true,
@@ -115,7 +117,7 @@
     },
     {
       "Id": "AQUA_M-M",
-      "Name": "AQUA_M-M",
+      "Name": "Aqua Manhã",
       "Begin": "2002-07-04",
       "End": "",
       "Current": true,
@@ -126,7 +128,7 @@
     },
     {
       "Id": "AQUA_M-T",
-      "Name": "AQUA_M-T",
+      "Name": "Aqua Tarde",
       "Begin": "2002-07-04",
       "End": "",
       "Current": true,
@@ -134,50 +136,6 @@
       "ReferenceBegin": "2002-07-04",
       "ReferenceEnd": "",
       "ReferenceCurrent": true
-    },
-    {
-      "Id": "TERRA-M",
-      "Name": "TERRA-M",
-      "Begin": "2002-09-16",
-      "End": "2013-09-09",
-      "Current": false,
-      "Selected": false,
-      "ReferenceBegin": "",
-      "ReferenceEnd": "",
-      "ReferenceCurrent": false
-    },
-    {
-      "Id": "TERRA-T",
-      "Name": "TERRA-T",
-      "Begin": "2002-09-25",
-      "End": "2013-09-09",
-      "Current": false,
-      "Selected": false,
-      "ReferenceBegin": "",
-      "ReferenceEnd": "",
-      "ReferenceCurrent": false
-    },
-    {
-      "Id": "AQUA-M",
-      "Name": "AQUA-M",
-      "Begin": "2002-09-23",
-      "End": "2013-09-09",
-      "Current": false,
-      "Selected": false,
-      "ReferenceBegin": "",
-      "ReferenceEnd": "",
-      "ReferenceCurrent": false
-    },
-    {
-      "Id": "AQUA-T",
-      "Name": "AQUA-T",
-      "Begin": "2002-09-24",
-      "End": "2013-09-09",
-      "Current": false,
-      "Selected": false,
-      "ReferenceBegin": "",
-      "ReferenceEnd": "",
-      "ReferenceCurrent": false
     },
     {
       "Id": "GOES-08",
@@ -214,7 +172,7 @@
     },
     {
       "Id": "GOES-13",
-      "Name": "GOES",
+      "Name": "GOES-13",
       "Begin": "2011-11-26",
       "End": "",
       "Current": true,
@@ -356,6 +314,17 @@
       "ReferenceCurrent": false
     },
     {
+      "Id": "METOP-C",
+      "Name": "METOP-C",
+      "Begin": "2019-12-17",
+      "End": "",
+      "Current": true,
+      "Selected": false,
+      "ReferenceBegin": "",
+      "ReferenceEnd": "",
+      "ReferenceCurrent": false
+    },
+    {
       "Id": "NOAA-19",
       "Name": "NOAA-19 Tarde",
       "Begin": "2010-02-06",
@@ -378,9 +347,9 @@
       "ReferenceCurrent": false
     },
     {
-      "Id": "NPP",
-      "Name": "NPP VIRS_700m",
-      "Begin": "2013-09-25",
+      "Id": "NOAA-20",
+      "Name": "NOAA-20",
+      "Begin": "2019-01-01",
       "End": "",
       "Current": true,
       "Selected": false,
@@ -389,9 +358,9 @@
       "ReferenceCurrent": false
     },
     {
-      "Id": "NPP_375",
-      "Name": "NPP VIRS_375m",
-      "Begin": "2015-01-17",
+      "Id": "NPP-375",
+      "Name": "NPP-375",
+      "Begin": "2012-01-01",
       "End": "",
       "Current": true,
       "Selected": false,
@@ -401,7 +370,7 @@
     },
     {
       "Id": "TRMM",
-      "Name": "TRMM NASA",
+      "Name": "TRMM",
       "Begin": "2007-01-01",
       "End": "2013-09-22",
       "Current": false,
