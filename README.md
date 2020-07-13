@@ -13,7 +13,8 @@ Instruções de instalação e configuração do projeto TerraMA2Q com Docker.
 Obtenha o repositório:
 
 ```bash
-svn checkout https://svn.cptec.inpe.br/qmd-terrama2q/qmd-terrama2q-docker
+git clone https://github.com/queimadas/terrama2q-docker.git
+cd terrama2q-docker
 ```
 
 Defina o arquivo `.env`:
