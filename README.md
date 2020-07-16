@@ -85,11 +85,19 @@ Para resetar os _containers_:
 
 ## Inicialização dos dados
 
-Recomenda-se a pré-configuração da base de dados para as tabelas de dados de focos de calor e limites geométricos (dados estáticos de países, estados, municípios, biomas e unidades de conservação).
+Para o correto funcionamento do WebGis BDQueimadas Light (bdqlight) é necessário configurar no Banco de Dados as tabelas de focos e limites políticos (dados estáticos de países, estados, municípios, biomas e unidades de conservação federal).
 
-Para tanto, é disponibilizado via FTP, de endereço [ftp://ftp.dgi.inpe.br/TerraMA2Q/](ftp://ftp.dgi.inpe.br/TerraMA2Q/), dados necessários para essa inicilização.
+Para tanto, foi disponibilizado no endereço [ftp://ftp.dgi.inpe.br/TerraMA2Q/treinamento](ftp://ftp.dgi.inpe.br/TerraMA2Q/treinamento), os dados necessários para essa inicilização. As credenciais para acesso são:
 
-Os seguintes comandos realizam o download dos dados necessários e os inserem na base de dados.bash
+```
+hostname = ftp.dgi.inpe.br
+username = queimadas
+password = inpe_2012
+```
+
+Os seguintes comandos abaixo realizam o download dos dados necessários e os inserem no banco terrama2.
+O arquivo de histórico de focos, focos_csv.zip possui dados dos sensores VIIRS e MODIS até 20200630. 
+IMPORTANTE: Deve ser verificado se o Sistema operacional onde será rodado os comandos possui o unzip e psql instalados.
 
 ```bash
 TMP_DIR=$(mktemp -d --suffix="-terrama2q")
@@ -97,38 +105,43 @@ TMP_DIR=$(mktemp -d --suffix="-terrama2q")
 mkdir -p ${TMP_DIR}
 cd ${TMP_DIR}
 
-curl --user "queimadas:inpe_2012" ftp://ftp.dgi.inpe.br/terrama2q/dados_dinamicos/focos_dump.tgz -O
-curl --user "queimadas:inpe_2012" ftp://ftp.dgi.inpe.br/terrama2q/dados_dinamicos/terrama2q_focos.tgz -O
-curl --user "queimadas:inpe_2012" ftp://ftp.dgi.inpe.br/terrama2q/dados_estaticos/shapefiles/paises_shp.zip -O
-curl --user "queimadas:inpe_2012" ftp://ftp.dgi.inpe.br/terrama2q/dados_estaticos/shapefiles/estados_shp.zip -O
-curl --user "queimadas:inpe_2012" ftp://ftp.dgi.inpe.br/terrama2q/dados_estaticos/shapefiles/municipios_shp.zip -O
-curl --user "queimadas:inpe_2012" ftp://ftp.dgi.inpe.br/terrama2q/dados_estaticos/shapefiles/biomas_shp.zip -O
-curl --user "queimadas:inpe_2012" ftp://ftp.dgi.inpe.br/terrama2q/dados_estaticos/shapefiles/ucfs_shp.zip -O
+# COMANDOS PARA DOWLOAD DOS DADOS
+curl --user "queimadas:inpe_2012" ftp://ftp.dgi.inpe.br/terrama2q/treinamento/dados_dinamicos/historico_focos/focos_csv.zip -O
+curl --user "queimadas:inpe_2012" ftp://ftp.dgi.inpe.br/terrama2q/treinamento/dados_dinamicos/historico_focos/focos_sql.zip -O
+curl --user "queimadas:inpe_2012" ftp://ftp.dgi.inpe.br/terrama2q/treinamento/dados_estaticos/sql/paises_sql.zip -O
+curl --user "queimadas:inpe_2012" ftp://ftp.dgi.inpe.br/terrama2q/treinamento/dados_estaticos/sql/estados_sql.zip -O
+curl --user "queimadas:inpe_2012" ftp://ftp.dgi.inpe.br/terrama2q/treinamento/dados_estaticos/sql/municipios_sql.zip -O
+curl --user "queimadas:inpe_2012" ftp://ftp.dgi.inpe.br/terrama2q/treinamento/dados_estaticos/sql/biomas_sql.zip -O
+curl --user "queimadas:inpe_2012" ftp://ftp.dgi.inpe.br/terrama2q/treinamento/dados_estaticos/sql/ucf_sql.zip -O
 
-tar xvaf focos_dump.tgz
-tar xvaf terrama2q_focos.tgz
+# COMANDOS PARA DESCOMPACTAÇÃO DOS ARQUIVOS
+unzip focos_csv.zip
+unzip focos_sql.zip
+unzip paises_sql.zip
+unzip estados_sql.zip
+unzip municipios_sql.zip
+unzip biomas_sql.zip
+unzip ucf_sql.zip
 
-unzip paises_shp.zip
-unzip estados_shp.zip
-unzip municipios_shp.zip
-unzip biomas_shp.zip
-unzip ucfs_shp.zip
+# EXEMPLO DE COMANDO PARA CONVERTER UM DADO SHAPEFILE PARA SQL QUE PODE SER UTILIZADO PARA OUTROS DADOS
+# Estes comandos foram utilizados para criar os arquivos que estão sendo utilizados.
+# shp2pgsql -s 4326 -I -c paises.shp s_paises > s_paises.sql
+# shp2pgsql -s 4326 -I -c estados.shp s_estados > s_estados.sql
+# shp2pgsql -s 4326 -I -c municipios.shp s_municipios > s_municipios.sql
+# shp2pgsql -s 4326 -I -c biomas.shp s_biomas > s_biomas.sql
+# shp2pgsql -s 4326 -I -c ucfs.shp s_ucf > s_ucf.sql
 
-shp2pgsql -s 4326 -c paises.shp s_paises > paises.sql
-shp2pgsql -s 4326 -c estados.shp s_estados > estados.sql
-shp2pgsql -s 4326 -c municipios.shp s_municipios > municipios.sql
-shp2pgsql -s 4326 -c biomas.shp s_biomas > biomas.sql
-shp2pgsql -s 4326 -c ucfs.shp s_ucfs > ucfs.sql
 
-psql -h localhost -p 5432 -U terrama2 -d terrama2 -f focos_dump/focos_schema.sql
-psql -h localhost -p 5433 -U terrama2 -d terrama2 -c "\\\copy './terrama2q_focos.csv' to d_focos with (format csv, header, delimiter ';')"
-psql -h localhost -p 5432 -U terrama2 -d terrama2 -f focos_dump/focos_post.sql
+# COMANDOS PARA INSERIR OS DADOS NO POSTGRESQL
+psql -h localhost -p 5432 -U terrama2 -d terrama2 -f focos_pre.sql
+psql -h localhost -p 5433 -U terrama2 -d terrama2 -c "\\copy d_focos (data_hora_gmt,longitude,latitude,satelite,id_0,id_1,id_2,pais,estado,municipio,bioma,bioma_id,foco_id,geom) from focos_ate_20200630-terrama2q.csv with (format csv, header, delimiter ';')"
+psql -h localhost -p 5432 -U terrama2 -d terrama2 -f focos_pos.sql
 
-psql -h localhost -p 5432 -U terrama2 -d terrama2 -f estados.sql
-psql -h localhost -p 5432 -U terrama2 -d terrama2 -f municipios.sql
-psql -h localhost -p 5432 -U terrama2 -d terrama2 -f paises.sql
-psql -h localhost -p 5432 -U terrama2 -d terrama2 -f biomas.sql
-psql -h localhost -p 5432 -U terrama2 -d terrama2 -f ucfs.sql
+psql -h localhost -p 5432 -U terrama2 -d terrama2 -f s_estados.sql
+psql -h localhost -p 5432 -U terrama2 -d terrama2 -f s_municipios.sql
+psql -h localhost -p 5432 -U terrama2 -d terrama2 -f s_paises.sql
+psql -h localhost -p 5432 -U terrama2 -d terrama2 -f s_biomas.sql
+psql -h localhost -p 5432 -U terrama2 -d terrama2 -f s_ucf.sql
 ```
 
 ## Dicas
