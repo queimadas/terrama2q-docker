@@ -54,7 +54,7 @@ DOCKER_COMPOSE=$(which docker-compose)
 is_valid $? "Docker-compose must be installed. ${DOCKER_COMPOSE_LINK}"
 
 if [ ! -d ${TERRAMA2_DOCKER_DIR} ]; then
-  git clone ${TERRAMA2_REPO_URL} ${TERRAMA2_DOCKER_DIR}
+  git clone -b ${TERRAMA2_BRANCH} ${TERRAMA2_REPO_URL} ${TERRAMA2_DOCKER_DIR}
 fi
 
 if [ ! -d ${BDQLIGHT_DOCKER_DIR} ]; then
