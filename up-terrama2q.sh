@@ -110,12 +110,12 @@ if [ ${POSTGRES_HOST} = ${POSTGRES_CONTAINER} ]; then
                --network ${SHARED_NETWORK} \
                -p 127.0.0.1:${POSTGRES_PORT}:5432 \
                -v ${POSTGRES_VOLUME}:/var/lib/postgresql/data \
-               -e POSTGRES_USER=${POSTGRES_USER} \
-               -e POSTGRES_PASSWORD=${POSTGRES_PASSWORD} \
+               -v /tmp:/tmp \
+	       -e POSTGRES_PASSWORD=${POSTGRES_PASSWORD} \
                -e POSTGRES_USER=${POSTGRES_USER} \
                -e POSTGRES_DB=${POSTGRES_DB} \
                ${POSTGRES_IMAGE}
-    QUERY="CREATE EXTENSION postgis; CREATE EXTENSION unaccent;"
+    QUERY="CREATE EXTENSION postgis; CREATE EXTENSION unaccent; drop schema tiger cascade;"
     eval "docker exec -it ${POSTGRES_CONTAINER} /usr/bin/psql -U ${POSTGRES_USER} -c \"${QUERY}\" -d ${POSTGRES_DB}"
 fi
 
