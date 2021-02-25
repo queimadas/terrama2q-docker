@@ -134,7 +134,7 @@ unzip ucf_sql.zip
 
 # COMANDOS PARA INSERIR OS DADOS NO POSTGRESQL
 psql -h localhost -p 5432 -U terrama2 -d terrama2 -f focos_pre.sql
-psql -h localhost -p 5433 -U terrama2 -d terrama2 -c "\\copy d_focos (data_hora_gmt,longitude,latitude,satelite,id_0,id_1,id_2,pais,estado,municipio,bioma,bioma_id,foco_id,geom) from focos_ate_20200630-terrama2q.csv with (format csv, header, delimiter ';')"
+psql -h localhost -p 5432 -U terrama2 -d terrama2 -c "\\copy d_focos (data_hora_gmt,longitude,latitude,satelite,id_0,id_1,id_2,pais,estado,municipio,bioma,bioma_id,foco_id,geometria) from focos_ate_20200630-terrama2q.csv with (format csv, header, delimiter ';')"
 psql -h localhost -p 5432 -U terrama2 -d terrama2 -f focos_pos.sql
 
 psql -h localhost -p 5432 -U terrama2 -d terrama2 -f s_estados.sql
