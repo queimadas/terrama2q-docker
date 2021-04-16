@@ -118,7 +118,7 @@ if [ ${POSTGRES_HOST} = ${POSTGRES_CONTAINER} ]; then
 	       
 	sleep 30
 	
-    QUERY="CREATE EXTENSION if not exists postgis; CREATE EXTENSION if not exists unaccent; drop schema tiger if exists cascade; drop schema tiger_data if exists cascade;"
+    QUERY="CREATE EXTENSION if not exists postgis; CREATE EXTENSION if not exists unaccent; drop schema if exists tiger cascade; drop schema if exists tiger_data cascade;"
     eval "docker exec -it ${POSTGRES_CONTAINER} /usr/bin/psql -U ${POSTGRES_USER} -c \"${QUERY}\" -d ${POSTGRES_DB}"
 fi
 
