@@ -92,6 +92,7 @@ if [ ${GEOSERVER_BY_DOCKER} = true ]; then
                --name ${GEOSERVER_CONTAINER} \
                --restart unless-stopped \
                --network ${SHARED_NETWORK} \
+	       --user '0:1000' \
                -p 127.0.0.1:8080:8080 \
                -e GEOSERVER_URL=${GEOSERVER_URL} \
                -e GEOSERVER_DATA_DIR=${GEOSERVER_DATA_DIR} \
